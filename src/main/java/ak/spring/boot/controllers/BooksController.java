@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @Controller
@@ -39,14 +40,19 @@ public class BooksController {
         return "books/index";
     }
 
+    @GetMapping("/purchase")
+    public String purchase(@ModelAttribute("book") Book Book, @ModelAttribute("person") Person person) {
+        return "books/purchase";
+    }
+
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model, @ModelAttribute("person") Person person) {
+    public String show(@PathVariable("id") int id, Model model, @ModelAttribute Person person) {
         model.addAttribute("book", booksService.findOne(id));
 
-        Person bookOwner = booksService.getBookOwner(id);
+        List<Person> bookOwners = booksService.getBookOwners(id);
 
-        if (bookOwner != null)
-            model.addAttribute("owner", bookOwner);
+        if (bookOwners != null)
+            model.addAttribute("owner", bookOwners);
         else
             model.addAttribute("people", peopleService.findAll());
 
@@ -84,6 +90,13 @@ public class BooksController {
         return "redirect:/books";
     }
 
+    @PostMapping("/{id}")
+    public String buy(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
+        System.out.println("OK");
+        booksService.buy(id, person);
+        return "redirect:/books";
+    }
+
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         booksService.delete(id);
@@ -96,12 +109,6 @@ public class BooksController {
         return "redirect:/books/" + id;
     }
 
-    @PatchMapping("/{id}/assign")
-    public String assign(@PathVariable("id") int id, @ModelAttribute("person") Person selectedPerson) {
-        // У selectedPerson назначено только поле id, остальные поля - null
-        booksService.assign(id, selectedPerson);
-        return "redirect:/books/" + id;
-    }
 
     @GetMapping("/search")
     public String searchPage() {

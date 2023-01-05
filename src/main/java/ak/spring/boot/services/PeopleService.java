@@ -44,6 +44,7 @@ public class PeopleService {
         peopleRepository.save(updatedPerson);
     }
 
+
     @Transactional
     public void delete(int id) {
         peopleRepository.deleteById(id);

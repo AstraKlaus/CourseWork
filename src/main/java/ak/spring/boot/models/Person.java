@@ -19,6 +19,11 @@ public class Person {
     @Column(name = "full_name")
     private String fullName;
 
+    @NotEmpty(message = "Имя не должно быть пустым")
+    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 100 символов длиной")
+    @Column(name = "username")
+    private String username;
+
     @Column(name = "email")
     @Email
     private String email;
@@ -28,7 +33,13 @@ public class Person {
     @Column(name = "year_of_birth")
     private int yearOfBirth;
 
-    @OneToMany(mappedBy = "owner")
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "role")
+    private String role;
+
+    @ManyToMany(mappedBy = "owners")
     private List<Book> books;
 
 
@@ -64,12 +75,34 @@ public class Person {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public String getEmail() {
-        return email;
-    }
+    public String getEmail() {return email;}
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Book> getBooks() {

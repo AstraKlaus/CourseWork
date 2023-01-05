@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="UTF-8">
     <title>Update book</title>
 </head>
 <body>
 
+<div class="d-flex justify-content-center align-items-center">
 <form th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     <label for="title">Введите название книги: </label>
     <input type="text" th:field="*{title}" id="title"/>
     <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</div>
@@ -19,8 +26,17 @@
     <input type="text" th:field="*{year}" id="year"/>
     <div style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year Error</div>
     <br/>
-    <input type="submit" value="Редактировать!"/>
+    <label for="price">Введите цену: </label>
+    <input type="text" th:field="*{price}" id="price"/>
+    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
+    <br/>
+    <input class="btn btn-primary" type="submit" value="Редактировать!"/>
 </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
 </html>

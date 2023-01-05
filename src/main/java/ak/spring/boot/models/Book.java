@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "Book")
@@ -28,9 +30,16 @@ public class Book {
     @Column(name = "year")
     private int year;
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", referencedColumnName = "id")
-    private Person owner;
+    @Column(name = "price")
+    private int price;
+
+    @ManyToMany
+    @JoinTable(
+            name = "Book_Person",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id")
+    )
+    private List<Person> owners;
 
     @Transient
     private boolean expired; // Hibernate не будет замечать этого поля, что нам и нужно. По-умолчанию false.
@@ -39,10 +48,11 @@ public class Book {
 
     }
 
-    public Book(String title, String author, int year) {
+    public Book(String title, String author, int year, int price) {
         this.title = title;
         this.author = author;
         this.year = year;
+        this.price = price;
     }
 
     public int getId() {
@@ -77,12 +87,20 @@ public class Book {
         this.year = year;
     }
 
-    public Person getOwner() {
-        return owner;
+    public List<Person> getOwners() {
+        return owners;
     }
 
-    public void setOwner(Person owner) {
-        this.owner = owner;
+    public void setOwners(List<Person> owners) {
+        this.owners = owners;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 
     public boolean isExpired() {

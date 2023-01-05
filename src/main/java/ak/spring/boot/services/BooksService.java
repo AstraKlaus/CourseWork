@@ -53,15 +53,24 @@ public class BooksService {
         booksRepository.save(book);
     }
 
+
     @Transactional
     public void update(int id, Book updatedBook) {
         Book bookToBeUpdated = booksRepository.findById(id).get();
 
         // добавляем по сути новую книгу (которая не находится в Persistence context), поэтому нужен save()
         updatedBook.setId(id);
-        updatedBook.setOwner(bookToBeUpdated.getOwner()); // чтобы не терялась связь при обновлении
+        updatedBook.setOwners(bookToBeUpdated.getOwners());// чтобы не терялась связь при обновлении
 
         booksRepository.save(updatedBook);
+        System.out.println("check");
+    }
+
+    @Transactional
+    public void buy(int id, Person owner) {
+        System.out.println("OK");
+        booksRepository.findById(id).ifPresent(book -> book.getOwners().add(owner));
+        owner.getBooks().add(booksRepository.findById(id).orElse(null));
     }
 
     @Transactional
@@ -70,9 +79,9 @@ public class BooksService {
     }
 
     // Returns null if book has no owner
-    public Person getBookOwner(int id) {
+    public List<Person> getBookOwners(int id) {
         // Здесь Hibernate.initialize() не нужен, так как владелец (сторона One) загружается не лениво
-        return booksRepository.findById(id).map(Book::getOwner).orElse(null);
+        return booksRepository.findById(id).map(Book::getOwners).orElse(null);
     }
 
     // Освбождает книгу (этот метод вызывается, когда человек возвращает книгу в библиотеку)
@@ -80,17 +89,8 @@ public class BooksService {
     public void release(int id) {
         booksRepository.findById(id).ifPresent(
                 book -> {
-                    book.setOwner(null);
+                    book.setOwners(null);
                 });
     }
 
-    // Назначает книгу человеку (этот метод вызывается, когда человек забирает книгу из библиотеки)
-    @Transactional
-    public void assign(int id, Person selectedPerson) {
-        booksRepository.findById(id).ifPresent(
-                book -> {
-                    book.setOwner(selectedPerson);
-                }
-        );
-    }
 }

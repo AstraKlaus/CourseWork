@@ -19,6 +19,10 @@
     <input type="text" th:field="*{year}" id="year"/>
     <div style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year Error</div>
     <br/>
+    <label for="year">Введите цену: </label>
+    <input type="text" th:field="*{price}" id="price"/>
+    <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Year Error</div>
+    <br/>
     <input type="submit" value="Создать!"/>
 </form>
 

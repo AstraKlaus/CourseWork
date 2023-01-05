@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Registration</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/auth/registration}" th:object="${person}">
+    <label for="fullName">Введите полное имя: </label>
+    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <div style="color:red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">fullName Error</div>
+    <br/>
+    <label for="username">Введите имя пользователя: </label>
+    <input type="text" th:field="*{username}" id="username"/>
+    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+    <br/>
+    <label for="email">Введите email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
+    <br/>
+    <label for="yearOfBirth">Введите год рождения: </label>
+    <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+    <div style="color:red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}">Year of birth Error</div>
+    <br/>
+    <label for="password">Введите пароль: </label>
+    <input type="password" th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
+    <br/>
+    <input type="submit" value="Sign up!"/>
+</form>
+
+</body>
+</html>
