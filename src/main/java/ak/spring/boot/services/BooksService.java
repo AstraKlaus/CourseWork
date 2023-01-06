@@ -68,9 +68,14 @@ public class BooksService {
 
     @Transactional
     public void buy(int id, Person owner) {
-        System.out.println("OK");
-        booksRepository.findById(id).ifPresent(book -> book.getOwners().add(owner));
+        System.out.println("OK" + booksRepository.findById(id).get().getTitle() + owner.getFullName());
+        System.out.println(booksRepository.findById(id).get().getOwners().toString());
+
+        booksRepository.findById(id).get().getOwners().add(owner);
         owner.getBooks().add(booksRepository.findById(id).orElse(null));
+        booksRepository.save(findOne(id));
+
+        System.out.println(booksRepository.findById(id).get().getOwners().toString());
     }
 
     @Transactional

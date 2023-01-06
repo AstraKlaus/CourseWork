@@ -7,7 +7,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "Person")
+@Table(name = "person")
 public class Person {
     @Id
     @Column(name = "id")
@@ -39,7 +39,12 @@ public class Person {
     @Column(name = "role")
     private String role;
 
-    @ManyToMany(mappedBy = "owners")
+    @ManyToMany
+    @JoinTable(
+            name = "book_person",
+            joinColumns = @JoinColumn(name = "person_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id")
+    )
     private List<Book> books;
 
 

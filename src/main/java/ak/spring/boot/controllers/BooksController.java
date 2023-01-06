@@ -4,8 +4,11 @@ import ak.spring.boot.models.Book;
 import ak.spring.boot.models.Person;
 import ak.spring.boot.services.BooksService;
 import ak.spring.boot.services.PeopleService;
+import ak.spring.boot.security.PersonDetails;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,7 +34,7 @@ public class BooksController {
     public String index(Model model, @RequestParam(value = "page", required = false) Integer page,
                         @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
                         @RequestParam(value = "sort_by_year", required = false) boolean sortByYear) {
-
+        System.out.println("here1");
         if (page == null || booksPerPage == null)
             model.addAttribute("books", booksService.findAll(sortByYear)); // выдача всех книг
         else
@@ -41,12 +44,18 @@ public class BooksController {
     }
 
     @GetMapping("/purchase")
-    public String purchase(@ModelAttribute("book") Book Book, @ModelAttribute("person") Person person) {
+    public String purchase(@ModelAttribute("book") Book Book, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+
+        model.addAttribute("person", personDetails.getPerson());
+        System.out.println("here2");
         return "books/purchase";
     }
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute Person person) {
+        System.out.println("here3");
         model.addAttribute("book", booksService.findOne(id));
 
         List<Person> bookOwners = booksService.getBookOwners(id);
@@ -61,12 +70,14 @@ public class BooksController {
 
     @GetMapping("/new")
     public String newBook(@ModelAttribute("book") Book Book) {
+        System.out.println("here4");
         return "books/new";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("book") @Valid Book Book,
                          BindingResult bindingResult) {
+        System.out.println("here5");
         if (bindingResult.hasErrors())
             return "books/new";
 
@@ -76,6 +87,7 @@ public class BooksController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
+        System.out.println("here6");
         model.addAttribute("book", booksService.findOne(id));
         return "books/edit";
     }
@@ -83,6 +95,7 @@ public class BooksController {
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("book") @Valid Book book, BindingResult bindingResult,
                          @PathVariable("id") int id) {
+        System.out.println("here7");
         if (bindingResult.hasErrors())
             return "books/edit";
 
@@ -91,20 +104,26 @@ public class BooksController {
     }
 
     @PostMapping("/{id}")
-    public String buy(@PathVariable("id") int id, @ModelAttribute("person") Person person) {
-        System.out.println("OK");
-        booksService.buy(id, person);
+    public String buy(@PathVariable("id") int id) {
+        System.out.println("here8");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+
+        booksService.buy(id, personDetails.getPerson());
+        peopleService.save(personDetails.getPerson());
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
+        System.out.println("here9");
         booksService.delete(id);
         return "redirect:/books";
     }
 
     @PatchMapping("/{id}/release")
     public String release(@PathVariable("id") int id) {
+        System.out.println("here10");
         booksService.release(id);
         return "redirect:/books/" + id;
     }
@@ -112,11 +131,13 @@ public class BooksController {
 
     @GetMapping("/search")
     public String searchPage() {
+        System.out.println("here11");
         return "books/search";
     }
 
     @PostMapping("/search")
     public String makeSearch(Model model, @RequestParam("query") String query) {
+        System.out.println("here12");
         model.addAttribute("books", booksService.searchByTitle(query));
         return "books/search";
     }

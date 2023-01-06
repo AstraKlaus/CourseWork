@@ -9,7 +9,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "Book")
+@Table(name = "book")
 public class Book {
     @Id
     @Column(name = "id")
@@ -33,12 +33,7 @@ public class Book {
     @Column(name = "price")
     private int price;
 
-    @ManyToMany
-    @JoinTable(
-            name = "Book_Person",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id")
-    )
+    @ManyToMany(mappedBy = "books")
     private List<Person> owners;
 
     @Transient

@@ -12,13 +12,11 @@
 </head>
 <body>
 <form class="d-flex justify-content-center align-items-center">
-    <div>
         <br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>
 
 <div th:if="${owners}">
     <span>Книга сейчас у: </span> <span th:text="${owners.size()}">Person Name</span>
-
     <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
         <input type="submit" value="Освободить книгу"/>
     </form>
@@ -35,22 +33,18 @@
         <input class="btn btn-warning" type="submit" value="Назначить книгу"/>
     </form>
 </div>
-
-<hr/>
-
-        <form th:method="POST" th:action="@{/books/{id}(id=${book.getId()})}">
-            <input class="btn btn-primary" type="submit" value="Добавить в корзину"/>
-        </form>
-
-        <div>
-<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
-    <input class="btn btn-primary" type="submit" value="Редактировать"/>
-</form>
+    <div>
 
 <form class="mt-1" th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input class="btn btn-danger" type="submit" value="Удалить"/>
 </form>
-        </div>
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+    <input class="btn btn-primary" type="submit" value="Редактировать"/>
+</form>
+<form th:method="POST" th:action="@{/books/{id}(id=${book.getId()})}">
+    <input class="btn btn-primary" type="submit" value="Добавить в корзину"/>
+</form>
+
     </div>
 </form>
 
