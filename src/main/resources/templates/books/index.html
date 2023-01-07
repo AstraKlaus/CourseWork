@@ -11,26 +11,7 @@
     <title>Index</title>
 </head>
 <body class="text-center">
-
-<div th:each="book : ${books}">
-    <a th:href="@{/books/{id}(id=${book.getId()})}"
-       th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">book</a>
-</div>
-    <br>
-    <input type="submit" value="Add" class="btn btn-primary"/>
-<br/>
-
-<div class="form-group">
-    <label class="col-4 col-form-label">Roles: </label>
-    <div class="col-8">
-        <th:block th:each="book : ${books}">
-            <input type="checkbox" th:field="*{books}"
-                   th:text="${book.getTitle()}" th:value="${book.getYear()}" class="m-2"/>
-        </th:block>
-    </div>
-</div>
-
-
+<br><br><br><br><br><br><br><br><br><br><br>
 
 <div class="mx-auto form-group">
 <table class="mx-auto w-50 p-3 table table-striped">
@@ -47,17 +28,25 @@
     <tbody th:each="book : ${books}">
     <tr>
         <th scope="row" th:text="${book.getId()}">1</th>
-        <td><a th:text="${book.getTitle()}" th:href="@{/books/{id}(id=${book.getId()})}">Перейти</a></td>
+        <td><a th:text="${book.getTitle()}">Перейти</a></td>
         <td th:text="${book.getAuthor()}">Otto</td>
         <td th:text="${book.getYear()}">@mdo</td>
         <td th:text="${book.getPrice()}">@mdo</td>
-        <td class="btn btn-primary"><a th:href="@{/books/{id}(id=${book.getId()})}">Добавить в корзину</a></td>
+        <td>
+            <a th:href="@{/books/{id}(id=${book.getId()})}">
+            <input class="btn btn-outline-primary btn-sm" type="submit" value="Добавить в корзину"></input>
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>
 </div>
 
 <br>
+
+<form th:action="@{/logout}" th:method="POST">
+    <input class="btn btn-warning" type="submit" value="Logout" />
+</form>
 
 <a href="/books/purchase">Оплатить</a>
 <br>

@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-/**
- * @author Neil Alishev
- */
+
 @Service
 public class PersonDetailsService implements UserDetailsService {
 

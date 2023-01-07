@@ -11,6 +11,8 @@
     <title>Show</title>
 </head>
 <body>
+<!--/*@thymesVar id="book" type="ak.spring.boot.models.Book"*/-->
+<!--/*@thymesVar id="person" type="ak.spring.boot.models.Person"*/-->
 <form class="d-flex justify-content-center align-items-center">
         <br/><br/><br/><br/><br/><br/><br/><br/><br/>
 <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">VALUE</p>

@@ -1,5 +1,6 @@
 package ak.spring.boot.controllers;
 
+
 import ak.spring.boot.models.Book;
 import ak.spring.boot.models.Person;
 import ak.spring.boot.services.BooksService;
@@ -15,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -49,6 +51,8 @@ public class BooksController {
         PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
 
         model.addAttribute("person", personDetails.getPerson());
+        model.addAttribute("amount", personDetails.getPerson().getBooks().size());
+        model.addAttribute("total", String.valueOf(booksService.findAll(false).stream().collect(Collectors.summarizingInt(book -> book.getPrice())).getSum()));
         System.out.println("here2");
         return "books/purchase";
     }
