@@ -9,22 +9,64 @@
     <meta charset="UTF-8">
     <title>Login page</title>
 </head>
-<body>
 
-<form name="f" method="post" action="/process_login">
+<style>
+    body {
+        height: 100%;
+    }
 
-    <label for="username">Введите имя пользователя: </label>
-    <input type="text" name="username" id="username"/>
-    <br/>
-    <label for="password">Введите пароль: </label>
-    <input type="password" name="password" id="password"/>
-    <br/>
-    <input type="submit" value="Login"/>
+    body {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+    }
 
-    <div th:if="${param.error}" style="color: red">
-        Неправильные имя или пароль
-    </div>
-</form>
+    .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+    }
+
+    .form-signin .checkbox {
+        font-weight: 400;
+    }
+
+    .form-signin .form-floating:focus-within {
+        z-index: 2;
+    }
+
+    .form-signin input[type="text"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+</style>
+
+<body class="text-center">
+<main class="form-signin">
+    <form name="f" method="POST" action="/process_login">
+        <img class="mb-4" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+        <h1 class="h3 mb-3 fw-normal">Пожалуйста авторизируйтесь</h1>
+
+        <div class="form-floating">
+            <input type="text" class="form-control" name="username" placeholder="Имя пользователя">
+        </div>
+        <div class="form-floating">
+            <input type="password" class="form-control" name="password" placeholder="Пароль">
+        </div>
+
+        <button class="btn btn-lg btn-primary" type="submit">Войти</button>
+    </form>
+</main>
 
 </body>
 </html>

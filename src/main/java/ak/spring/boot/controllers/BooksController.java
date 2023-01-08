@@ -36,6 +36,11 @@ public class BooksController {
     public String index(Model model, @RequestParam(value = "page", required = false) Integer page,
                         @RequestParam(value = "books_per_page", required = false) Integer booksPerPage,
                         @RequestParam(value = "sort_by_year", required = false) boolean sortByYear) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+
+        model.addAttribute("person", personDetails.getPerson());
+
         System.out.println("here1");
         if (page == null || booksPerPage == null)
             model.addAttribute("books", booksService.findAll(sortByYear)); // выдача всех книг
@@ -59,6 +64,11 @@ public class BooksController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model, @ModelAttribute Person person) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
+
+        model.addAttribute("person", personDetails.getPerson());
+
         System.out.println("here3");
         model.addAttribute("book", booksService.findOne(id));
 
@@ -121,6 +131,7 @@ public class BooksController {
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         System.out.println("here9");
+        peopleService.deleteBook(id);
         booksService.delete(id);
         return "redirect:/books";
     }

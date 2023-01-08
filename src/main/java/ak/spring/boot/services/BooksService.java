@@ -80,6 +80,11 @@ public class BooksService {
 
     @Transactional
     public void delete(int id) {
+        booksRepository.findById(id).get().getOwners().stream().forEach(person -> System.out.println(person.getFullName()));
+        booksRepository.findById(id).get().getOwners().clear();
+        booksRepository.save(booksRepository.findById(id).get());
+        booksRepository.findById(id).get().getOwners().stream().forEach(person -> System.out.println(person.getFullName()));
+        System.out.println("here");
         booksRepository.deleteById(id);
     }
 

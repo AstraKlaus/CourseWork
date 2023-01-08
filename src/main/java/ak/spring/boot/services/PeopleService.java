@@ -18,10 +18,12 @@ import java.util.Optional;
 public class PeopleService {
 
     private final PeopleRepository peopleRepository;
+    private final BooksService booksService;
 
     @Autowired
-    public PeopleService(PeopleRepository peopleRepository) {
+    public PeopleService(PeopleRepository peopleRepository, BooksService booksService) {
         this.peopleRepository = peopleRepository;
+        this.booksService = booksService;
     }
 
     public List<Person> findAll() {
@@ -36,6 +38,12 @@ public class PeopleService {
     @Transactional
     public void save(Person person) {
         peopleRepository.save(person);
+    }
+
+    @Transactional
+    public void deleteBook(int id){
+        Book book = booksService.findOne(id);
+        peopleRepository.findAll().forEach(person -> person.getBooks().remove(book));
     }
 
     @Transactional

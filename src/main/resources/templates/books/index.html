@@ -10,31 +10,70 @@
     <meta charset="UTF-8">
     <title>Index</title>
 </head>
+<style>
+    body {
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+    }
+</style>
 <body class="text-center">
-<br><br><br><br><br><br><br><br><br><br><br>
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="#" class="nav-link px-2 text-white">Главная страница</a></li>
+            </ul>
+
+<!--            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">-->
+<!--                <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">-->
+<!--            </form>-->
+
+            <div class="d-inline-flex">
+                <form th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-warning" type="submit" value="Выйти" />
+                </form>
+
+                <a href="/auth/registration">
+                    <input class="btn btn-primary" type="button" value="Зарегестрироваться"
+                           style="margin-right:.5rem!important;margin-left:.5rem!important;"/>
+                </a>
+
+                <a th:if="${person.getRole().equals('ROLE_ADMIN')}" href="/admin">
+                    <input class="btn btn-info" type="reset" value="Админ"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+<br><br><br>
+<!--/*@thymesVar id="book" type="ak.spring.boot.models.Book"*/-->
+<!--/*@thymesVar id="person" type="ak.spring.boot.models.Person"*/-->
+<!--/*@thymesVar id="person" type="ak.spring.boot.controllers.BooksController"*/-->
 
 <div class="mx-auto form-group">
 <table class="mx-auto w-50 p-3 table table-striped">
     <thead>
     <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Title</th>
-        <th scope="col">Author</th>
-        <th scope="col">Year</th>
-        <th scope="col">Price</th>
-        <th scope="col">Purchase</th>
+        <th scope="col">Название</th>
+        <th scope="col">Автор</th>
+        <th scope="col">Год</th>
+        <th scope="col">Цена</th>
+        <th scope="col">Покупка</th>
     </tr>
     </thead>
     <tbody th:each="book : ${books}">
     <tr>
-        <th scope="row" th:text="${book.getId()}">1</th>
         <td><a th:text="${book.getTitle()}">Перейти</a></td>
         <td th:text="${book.getAuthor()}">Otto</td>
         <td th:text="${book.getYear()}">@mdo</td>
         <td th:text="${book.getPrice()}">@mdo</td>
         <td>
             <a th:href="@{/books/{id}(id=${book.getId()})}">
-            <input class="btn btn-outline-primary btn-sm" type="submit" value="Добавить в корзину"></input>
+            <input class="btn btn-outline-primary btn-sm" type="submit" value="Перейти"></input>
             </a>
         </td>
     </tr>
@@ -43,16 +82,18 @@
 </div>
 
 <br>
+<div>
 
-<form th:action="@{/logout}" th:method="POST">
-    <input class="btn btn-warning" type="submit" value="Logout" />
-</form>
 
-<a href="/books/purchase">Оплатить</a>
-<br>
+<a href="/books/purchase">
+    <input class="btn btn-success m-2 p-2" value="Оплатить"/>
+</a>
 
-<a href="/books/new">Добавить книгу</a>
+<a th:if="${person.getRole().equals('ROLE_ADMIN')}" href="/books/new">
+    <input class="btn btn-info m-2 p-2" value="Добавить кингу"/>
+</a>
 
+</div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
