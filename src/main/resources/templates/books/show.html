@@ -16,33 +16,66 @@
     }
 </style>
 <body class="text-center">
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/books" class="nav-link px-2 text-white">Главная страница</a></li>
+            </ul>
+
+            <!--            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">-->
+            <!--                <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">-->
+            <!--            </form>-->
+
+            <div class="d-inline-flex">
+                <form th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-warning" type="submit" value="Выйти" />
+                </form>
+
+                <a href="/auth/registration">
+                    <input class="btn btn-primary" type="button" value="Зарегистрироваться"
+                           style="margin-right:.5rem!important;margin-left:.5rem!important;"/>
+                </a>
+
+                <a th:if="${person.getRole().equals('ROLE_ADMIN')}" href="/admin">
+                    <input class="btn btn-info" type="reset" value="Админ"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
 <!--/*@thymesVar id="book" type="ak.spring.boot.models.Book"*/-->
 <!--/*@thymesVar id="person" type="ak.spring.boot.models.Person"*/-->
 <br><br><br><br><br>
-<form class="d-flex justify-content-center align-items-center">
+<form class="d-flex justify-content-center align-items-center" th:object="${book}">
     <div class="row row-cols-1 row-cols-md-3 mb-3 text-center w-50">
         <div class="col">
             <div class="card mb-4 rounded-3 shadow-sm">
                 <div class="card-header py-3">
                     <h4 class="my-0 fw-normal" th:text="${book.getTitle()}">Про</h4>
                 </div>
-                <div class="card-body">
+                <div th:if="${book.getQuantity()>0}" class="card-body">
                     <h1 class="card-title pricing-card-title" th:text="${book.getPrice()} + '₽'">$15</h1>
                     <ul class="list-unstyled mt-3 mb-4">
                         <li th:text="${book.getAuthor()}">20 пользователей включено</li>
                         <li th:text="${book.getYear()}">10 ГБ хранилища</li>
                     </ul>
+
                     <form th:method="POST" th:action="@{/books/{id}(id=${book.getId()})}">
                         <input class="btn btn-primary" type="hidden" value="Добавить в корзину" style="margin-bottom: 5px"/>
                     </form>
-                    <form th:method="POST" th:action="@{/books/{id}(id=${book.getId()})}">
+                    <form th:if="${!inCart}" th:method="POST" th:action="@{/books/{id}(id=${book.getId()})}">
                         <input class="btn btn-primary" type="submit" value="Добавить в корзину" style="margin-bottom: 5px"/>
                     </form>
                     <form th:if="${person.getRole().equals('ROLE_ADMIN')}" th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
                         <input class="btn badge-warning" type="submit" value="Редактировать"/>
                     </form>
-                    <form th:if="${person.getRole().equals('ROLE_ADMIN')}" class="mt-1" th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
-                        <input class="btn btn-danger" type="submit" value="Удалить"/>
+                    <form th:if="${inCart}" class="mt-1" th:method="DELETE" th:action="@{/books/{id}(person_id=${person.getId()}, id=${book.getId()})}">
+                        <input class="btn btn-danger" type="submit" value="Удалить из корзины"/>
                     </form>
                 </div>
             </div>

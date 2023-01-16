@@ -11,16 +11,42 @@
 </head>
 <body>
 
+<header class="p-3 bg-dark text-white">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+      <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+      </a>
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="/books" class="nav-link px-2 text-white">Главная страница</a></li>
+      </ul>
+
+      <!--            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">-->
+      <!--                <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">-->
+      <!--            </form>-->
+
+      <div class="d-inline-flex">
+        <form th:action="@{/logout}" th:method="POST">
+          <input class="btn btn-warning" type="submit" value="Выйти" />
+        </form>
+
+        <a href="/auth/registration">
+          <input class="btn btn-primary" type="button" value="Зарегестрироваться"
+                 style="margin-right:.5rem!important;margin-left:.5rem!important;"/>
+        </a>
+
+        <a th:if="${person.getRole().equals('ROLE_ADMIN')}" href="/admin">
+          <input class="btn btn-info" type="reset" value="Админ"/>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
 <!--/*@thymesVar id="book" type="ak.spring.boot.models.Book"*/-->
 <!--/*@thymesVar id="person" type="ak.spring.boot.models.Person"*/-->
 <!--/*@thymesVar id="amount" type="ak.spring.boot.controllers.BooksController"*/-->
 <div class="container">
-  <div class="py-5 text-center">
-    <img class="d-block mx-auto mb-4" src="/docs/4.6/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h2>Checkout form</h2>
-    <p class="lead">Below is an example form built entirely with Bootstrap’s form controls. Each required form group has a validation state that can be triggered by attempting to submit the form without completing it.</p>
-  </div>
-
   <div class="row">
     <div class="col-md-4 order-md-2 mb-4">
       <h4 class="d-flex justify-content-between align-items-center mb-3">
@@ -90,7 +116,7 @@
           </div>
           <div class="col-md-6 mb-3">
             <label for="cc-number">Номер карты</label>
-            <input type="text" class="form-control" id="cc-number" placeholder="" required>
+            <input type="number" class="form-control" id="cc-number" placeholder="" required>
             <div class="invalid-feedback">
               Номер карты обязателен
             </div>
@@ -99,21 +125,21 @@
         <div class="row">
           <div class="col-md-3 mb-3">
             <label for="cc-expiration">Срок действия</label>
-            <input type="text" class="form-control" id="cc-expiration" placeholder="" required>
+            <input type="number" class="form-control" id="cc-expiration" placeholder="" required>
             <div class="invalid-feedback">
               Срок действия обязателен
             </div>
           </div>
           <div class="col-md-3 mb-3">
             <label for="cc-cvv">CVV</label>
-            <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+            <input type="number" class="form-control" id="cc-cvv" placeholder="" required>
             <div class="invalid-feedback">
               Код обязателен
             </div>
           </div>
         </div>
         <hr class="mb-4">
-        <button class="btn btn-primary btn-lg btn-block" type="submit">Продолжить для оплаты</button>
+        <a th:href="@{/books/successful}" class="btn btn-primary btn-lg btn-block">Продолжить для оплаты</a>
       </form>
     </div>
   </div>

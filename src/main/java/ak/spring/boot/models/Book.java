@@ -33,21 +33,23 @@ public class Book {
     @Column(name = "price")
     private int price;
 
+    @Min(value = 0, message = "Количество должно быть быть больше или равно, чем 0")
+    @Column(name = "quantity")
+    private int quantity;
+
     @ManyToMany(mappedBy = "books")
     private List<Person> owners;
-
-    @Transient
-    private boolean expired; // Hibernate не будет замечать этого поля, что нам и нужно. По-умолчанию false.
 
     public Book() {
 
     }
 
-    public Book(String title, String author, int year, int price) {
+    public Book(String title, String author, int year, int price, int quantity) {
         this.title = title;
         this.author = author;
         this.year = year;
         this.price = price;
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -98,11 +100,11 @@ public class Book {
         this.price = price;
     }
 
-    public boolean isExpired() {
-        return expired;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setExpired(boolean expired) {
-        this.expired = expired;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

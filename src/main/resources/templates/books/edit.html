@@ -10,6 +10,38 @@
     <title>Update book</title>
 </head>
 <body>
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/books" class="nav-link px-2 text-white">Главная страница</a></li>
+            </ul>
+
+            <!--            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">-->
+            <!--                <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">-->
+            <!--            </form>-->
+
+            <div class="d-inline-flex">
+                <form th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-warning" type="submit" value="Выйти" />
+                </form>
+
+                <a href="/auth/registration">
+                    <input class="btn btn-primary" type="button" value="Зарегестрироваться"
+                           style="margin-right:.5rem!important;margin-left:.5rem!important;"/>
+                </a>
+
+                <a th:if="${person.getRole().equals('ROLE_ADMIN')}" href="/admin">
+                    <input class="btn btn-info" type="reset" value="Админ"/>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
 
 <div class="d-flex justify-content-center align-items-center">
 <form th:method="PATCH" th:action="@{/books/{id}(id=${book.getId()})}" th:object="${book}">
@@ -29,6 +61,10 @@
     <label for="price">Введите цену: </label>
     <input type="text" th:field="*{price}" id="price"/>
     <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
+    <br/>
+    <label for="quantity">Введите количество: </label>
+    <input type="text" th:field="*{quantity}" id="quantity"/>
+    <div style="color:red" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Price Error</div>
     <br/>
     <input class="btn btn-primary" type="submit" value="Редактировать!"/>
 </form>

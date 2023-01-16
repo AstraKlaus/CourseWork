@@ -5,6 +5,7 @@ import ak.spring.boot.models.Person;
 import ak.spring.boot.repositories.PeopleRepository;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,11 +48,19 @@ public class PeopleService {
     }
 
     @Transactional
-    public void update(int id, Person updatedPerson) {
-        updatedPerson.setId(id);
-        peopleRepository.save(updatedPerson);
+    public void buy(int id, Person owner) {
+        getBooksByPersonId(owner.getId()).add(booksService.findOne(id));
+        save(findOne(owner.getId()));
     }
 
+    @Transactional
+    public void update(int id, Person updatedPerson) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        updatedPerson.setId(id);
+        updatedPerson.setPassword(encoder.encode(updatedPerson.getPassword()));
+        if (updatedPerson.getRole() == null) updatedPerson.setRole(findOne(id).getRole());
+        peopleRepository.save(updatedPerson);
+    }
 
     @Transactional
     public void delete(int id) {

@@ -8,14 +8,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="UTF-8">
-    <title>New book</title>
+    <title>Show</title>
 </head>
 <style>
     body {
         background-color: #f5f5f5;
     }
 </style>
-<body>
+<body class="text-center">
 <header class="p-3 bg-dark text-white">
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
@@ -32,6 +32,14 @@
             <!--            </form>-->
 
             <div class="d-inline-flex">
+                <form th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-warning" type="submit" value="Выйти" />
+                </form>
+
+                <a href="/auth/registration">
+                    <input class="btn btn-primary" type="button" value="Зарегестрироваться"
+                           style="margin-right:.5rem!important;margin-left:.5rem!important;"/>
+                </a>
 
                 <a th:if="${person.getRole().equals('ROLE_ADMIN')}" href="/admin">
                     <input class="btn btn-info" type="reset" value="Админ"/>
@@ -40,38 +48,31 @@
         </div>
     </div>
 </header>
-<br><br><br><br>
-<div class="d-flex justify-content-center align-items-center">
-<form th:method="POST" th:action="@{/books}" th:object="${book}">
-    <div class="form-floating">
-        <label for="title">Введите название книги: </label>
-        <input type="text" th:field="*{title}" id="title" placeholder="Название книги"/>
-        <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Title Error</div>
-    </div>
-    <div class="form-floating">
-        <label for="author">Введите автора: </label>
-        <input type="text" th:field="*{author}" id="author" placeholder="Автор"/>
-        <div style="color:red" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Author Error</div>
-    </div>
-    <div class="form-floating">
-        <label for="year">Введите год издания: </label>
-        <input type="text" th:field="*{year}" id="year" placeholder="Год издания"/>
-        <div style="color:red" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Year Error</div>
-    </div>
-    <div class="form-floating">
-        <label for="price">Введите цену: </label>
-        <input type="text" th:field="*{price}" id="price" placeholder="Цена"/>
-        <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">Price Error</div>
-    </div>
-    <div class="form-floating">
-        <label for="quantity">Введите количество: </label>
-        <input type="text" th:field="*{quantity}" id="quantity" placeholder="Цена"/>
-        <div style="color:red" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}">Price Error</div>
-    </div>
+<!--/*@thymesVar id="book" type="ak.spring.boot.models.Book"*/-->
+<!--/*@thymesVar id="person" type="ak.spring.boot.models.Person"*/-->
+<br><br><br><br><br>
+<form class="d-flex justify-content-center align-items-center" th:object="${person}">
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center w-50">
+        <div class="col">
+            <div class="card mb-4 rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h4 class="my-0 fw-normal" th:text="${person.getFullName()+', '+person.getYearOfBirth()}">Про</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title" th:text="${person.getUsername()}">$15</h1>
 
-    <input class="btn btn-primary" type="submit" value="Создать!"/>
+                    <h1 class="card-title pricing-card-title" th:text="${person.getEmail()}">$15</h1>
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li th:text="${person.getRole()}">20 пользователей включено</li>
+                    </ul>
+                    <form th:method="GET" th:action="@{/person/{id}(id=${person.getId()})}">
+                        <input class="btn btn-primary" value="Редактировать данные" style="margin-bottom: 5px"/>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </form>
-</div>
 
 </body>
 </html>

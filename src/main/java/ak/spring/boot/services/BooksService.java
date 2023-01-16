@@ -3,6 +3,7 @@ package ak.spring.boot.services;
 import ak.spring.boot.models.Book;
 import ak.spring.boot.models.Person;
 import ak.spring.boot.repositories.BooksRepository;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -67,23 +68,9 @@ public class BooksService {
     }
 
     @Transactional
-    public void buy(int id, Person owner) {
-        System.out.println("OK" + booksRepository.findById(id).get().getTitle() + owner.getFullName());
-        System.out.println(booksRepository.findById(id).get().getOwners().toString());
-
-        booksRepository.findById(id).get().getOwners().add(owner);
-        owner.getBooks().add(booksRepository.findById(id).orElse(null));
-        booksRepository.save(findOne(id));
-
-        System.out.println(booksRepository.findById(id).get().getOwners().toString());
-    }
-
-    @Transactional
     public void delete(int id) {
-        booksRepository.findById(id).get().getOwners().stream().forEach(person -> System.out.println(person.getFullName()));
         booksRepository.findById(id).get().getOwners().clear();
         booksRepository.save(booksRepository.findById(id).get());
-        booksRepository.findById(id).get().getOwners().stream().forEach(person -> System.out.println(person.getFullName()));
         System.out.println("here");
         booksRepository.deleteById(id);
     }

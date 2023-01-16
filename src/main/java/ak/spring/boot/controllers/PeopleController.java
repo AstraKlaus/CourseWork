@@ -1,10 +1,13 @@
 package ak.spring.boot.controllers;
 
 import ak.spring.boot.models.Person;
+import ak.spring.boot.security.PersonDetails;
 import ak.spring.boot.services.PeopleService;
 import ak.spring.boot.util.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @Controller
-@RequestMapping("/people")
+@RequestMapping("/person")
 public class PeopleController {
 
     private final PeopleService peopleService;
@@ -24,18 +27,13 @@ public class PeopleController {
         this.personValidator = personValidator;
     }
 
-    @GetMapping()
-    public String index(Model model) {
-        model.addAttribute("people", peopleService.findAll());
-        return "people/index";
-    }
-
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("person", peopleService.findOne(id));
-        model.addAttribute("books", peopleService.getBooksByPersonId(id));
+    public String index(Model model, @PathVariable String id) {
 
-        return "people/show";
+        model.addAttribute("person", peopleService.findOne(Integer.parseInt(id)));
+        model.addAttribute("books", peopleService.getBooksByPersonId(Integer.parseInt(id)));
+
+        return "person/index";
     }
 
     @GetMapping("/new")
@@ -49,31 +47,31 @@ public class PeopleController {
         personValidator.validate(person, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "people/new";
+            return "person/new";
 
         peopleService.save(person);
-        return "redirect:/people";
+        return "redirect:/person";
     }
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("person", peopleService.findOne(id));
-        return "people/edit";
+        return "person/edit";
     }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person, BindingResult bindingResult,
                          @PathVariable("id") int id) {
         if (bindingResult.hasErrors())
-            return "people/edit";
+            return "person/edit";
 
         peopleService.update(id, person);
-        return "redirect:/people";
+        return "redirect:/person/" + id;
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         peopleService.delete(id);
-        return "redirect:/people";
+        return "redirect:/person";
     }
 }

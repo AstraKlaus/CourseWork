@@ -17,7 +17,36 @@
 <!--/*@thymesVar id="books" type="ak.spring.boot.controllers.AdminController"*/-->
 
 <body class="text-center">
-<br><br><br><br><br><br><br><br>
+<header class="p-3 bg-dark text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li><a href="/books" class="nav-link px-2 text-white">Главная страница</a></li>
+            </ul>
+
+            <div class="d-inline-flex">
+
+                <a href="/admin/books">
+                    <input class="btn btn-info" type="reset" value="Книги"/>
+                </a>
+
+                <a href="/admin/people">
+                    <input class="btn btn-info" type="reset" value="Пользователи"
+                           style="margin-right:.5rem!important;margin-left:.5rem!important;"/>
+                </a>
+
+                <form th:action="@{/logout}" th:method="POST">
+                    <input class="btn btn-warning" type="submit" value="Выйти" />
+                </form>
+            </div>
+        </div>
+    </div>
+</header>
+<br><br><br>
 
 <div class="mx-auto form-group">
     <table class="mx-auto w-75 p-3 table table-striped">
